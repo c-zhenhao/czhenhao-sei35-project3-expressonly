@@ -4,7 +4,11 @@ const path = require("path");
 const app = express();
 const cors = require("cors");
 
-const origin = ["http://127.0.0.1:3000", "http://localhost:3000", `${process.env.FRONTEND_URI}`];
+const origin = [
+  "http://127.0.0.1:3000",
+  "http://localhost:3000",
+  `${process.env.FRONTEND_URI}`,
+];
 app.use(cors({ credentials: true, origin }));
 
 // app.use(cors());
@@ -14,7 +18,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.set("view engine", "hbs");
 
 const connectDB = require("../db/db");
-const mongoURI = `${process.env.MONGODB_URI}/onlyfriends`;
+const mongoURI = `${process.env.MONGODB_URI}`; // /onlyfriends
 connectDB(mongoURI);
 
 const MongoDBStore = require("connect-mongodb-session")(session);
