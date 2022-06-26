@@ -8,6 +8,7 @@ const origin = [
   "http://127.0.0.1:3000",
   "http://localhost:3000",
   `${process.env.FRONTEND_URI}`,
+  "*",
 ];
 app.use(cors({ credentials: true, origin: origin }));
 
@@ -22,6 +23,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers",
     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
   );
+  res.header("preFlightContinue", true);
   next();
 });
 
