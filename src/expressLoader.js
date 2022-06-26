@@ -23,7 +23,6 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers",
     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
   );
-  res.header("preFlightContinue", true);
   next();
 });
 

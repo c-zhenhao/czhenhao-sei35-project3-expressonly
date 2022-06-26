@@ -3,13 +3,31 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Users = require("../models/Users");
+const app = require("../src/expressLoader");
 
 const usernameOrPasswordError = {
   title: "error",
   message: "username or password error",
 };
 
-router.put("/signup", async (req, res) => {
+// try inserting cors into endpoint
+const cors = require("cors");
+app.use(cors({ credentials: true, origin: "*" }));
+const headers = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+};
+
+router.put("/signup", cors(), headers, async (req, res) => {
   try {
     req.body.userRating = [2.5];
     req.body.userInteracted = [];
@@ -22,15 +40,19 @@ router.put("/signup", async (req, res) => {
       req.session.userId = createdUser.id;
       res.json({ userId: createdUser.id, profile: createdUser });
     } else {
-      res.status(401).json({ title: "error", message: `unable to create user` });
+      res
+        .status(401)
+        .json({ title: "error", message: `unable to create user` });
     }
   } catch (err) {
     console.error(err);
-    res.status(400).json({ title: "error", message: `unable to complete request` });
+    res
+      .status(400)
+      .json({ title: "error", message: `unable to complete request` });
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", cors(), headers, async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await Users.findOne({ username });
