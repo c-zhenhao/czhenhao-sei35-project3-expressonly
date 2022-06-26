@@ -40,6 +40,8 @@ app.use(
 
 app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
+  console.log(req);
+  console.log(res);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
