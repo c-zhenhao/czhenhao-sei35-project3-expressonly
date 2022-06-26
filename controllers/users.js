@@ -12,7 +12,12 @@ const usernameOrPasswordError = {
 
 // try inserting cors into endpoint
 const cors = require("cors");
-app.use(cors({ credentials: true, origin: "*" }));
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://czhenhao-sei-35-project3.vercel.app/",
+  })
+);
 const headers = (req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
@@ -29,6 +34,7 @@ const headers = (req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 };
+////////////////////////////////////////
 
 router.put("/signup", cors(), headers, async (req, res) => {
   try {

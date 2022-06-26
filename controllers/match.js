@@ -9,9 +9,37 @@ const dbError = {
   message: "unable to complete request",
 };
 
-router.get("/", auth, async (req, res) => {
+// try inserting cors into endpoint
+const cors = require("cors");
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://czhenhao-sei-35-project3.vercel.app/",
+  })
+);
+const headers = (req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app/"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+};
+////////////////////////////////////////
+
+router.get("/", auth, cors(), headers, async (req, res) => {
   try {
-    const { userInteracted, userPreference } = await Users.findById(req.session.userId);
+    const { userInteracted, userPreference } = await Users.findById(
+      req.session.userId
+    );
     let { gender, ageMax, ageMin, interested } = userPreference;
     if (gender === "both") gender = ["male", "female"];
 
@@ -23,11 +51,16 @@ router.get("/", auth, async (req, res) => {
 
     const toFind = { username: { $nin: filter } };
     if (gender) toFind.gender = gender;
-    if (ageMin && ageMax) toFind.$and = [{ age: { $gte: ageMin } }, { age: { $lte: ageMax } }];
-    if (interested.length) toFind.interests = { $elemMatch: { $in: interested } };
+    if (ageMin && ageMax)
+      toFind.$and = [{ age: { $gte: ageMin } }, { age: { $lte: ageMax } }];
+    if (interested.length)
+      toFind.interests = { $elemMatch: { $in: interested } };
 
     res.json(
-      await Users.find({ ...toFind }, { passwordHash: 0 }).collation({ locale: "en", strength: 2 })
+      await Users.find({ ...toFind }, { passwordHash: 0 }).collation({
+        locale: "en",
+        strength: 2,
+      })
     );
   } catch (err) {
     console.error(err);
@@ -35,7 +68,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.post("/", auth, async (req, res) => {
+router.post("/", auth, cors(), headers, async (req, res) => {
   try {
     const { userInteracted } = await Users.findById(req.session.userId);
     userInteracted.push(req.body);
@@ -44,7 +77,8 @@ router.post("/", auth, async (req, res) => {
     if (req.body.swiped) {
       const target = await Users.findOne({ username: req.body.targetUsername });
       const targetInteracted = target.userInteracted.filter(
-        (target) => target.targetUsername === req.session.currentUser && target.swiped
+        (target) =>
+          target.targetUsername === req.session.currentUser && target.swiped
       );
       if (targetInteracted.length === 1) res.json({ matched: true });
       else res.json({ matched: false });
@@ -57,7 +91,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router.patch("/filters", auth, async (req, res) => {
+router.patch("/filters", cors(), headers, auth, async (req, res) => {
   try {
     const { userPreference } = req.body;
     await Users.findByIdAndUpdate(req.session.userId, { userPreference });

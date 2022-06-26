@@ -17,7 +17,8 @@ app.use("/profile", profile);
 app.use("/match", match);
 app.use("/list", list);
 
-const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const characters =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 const randStr = (len) => {
   let result = "";
   const charactersLength = characters.length;
@@ -27,7 +28,7 @@ const randStr = (len) => {
   return result;
 };
 
-app.post("/seed", async (req, res) => {
+app.post("/seed", cors(), headers, async (req, res) => {
   for (let ea of seed) {
     ea.passwordHash = await bcrypt.hash("password", 12);
     ea.age = Math.floor(Math.random() * 52) + 18;
@@ -54,11 +55,13 @@ app.post("/seed", async (req, res) => {
   //   res.json();
 });
 
-app.get("/seed", async (req, res) => {
+app.get("/seed", cors(), headers, async (req, res) => {
   try {
     const data = await Users.find();
     res.json(data);
   } catch (err) {
-    res.status(400).json({ title: "error", message: "unable to complete request" });
+    res
+      .status(400)
+      .json({ title: "error", message: "unable to complete request" });
   }
 });

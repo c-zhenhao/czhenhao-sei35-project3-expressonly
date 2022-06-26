@@ -9,7 +9,33 @@ const dbError = {
   message: "unable to complete request",
 };
 
-router.get("/", auth, async (req, res) => {
+// try inserting cors into endpoint
+const cors = require("cors");
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://czhenhao-sei-35-project3.vercel.app/",
+  })
+);
+const headers = (req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app/"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+};
+////////////////////////////////////////
+
+router.get("/", auth, cors(), headers, async (req, res) => {
   try {
     const { userInteracted } = await Users.findById(req.session.userId);
     const filteredList = userInteracted.filter((target) => target.swiped);
@@ -17,7 +43,8 @@ router.get("/", auth, async (req, res) => {
     for (let { targetUsername } of filteredList) {
       const target = await Users.findOne({ username: targetUsername });
       target.userInteracted.forEach((ea) => {
-        if (ea.targetUsername === req.session.currentUser && ea.swiped) matchedList.push(target);
+        if (ea.targetUsername === req.session.currentUser && ea.swiped)
+          matchedList.push(target);
       });
     }
     res.json(

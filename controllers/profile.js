@@ -14,6 +14,32 @@ const dbError = {
   message: "unable to complete request",
 };
 
+// try inserting cors into endpoint
+const cors = require("cors");
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://czhenhao-sei-35-project3.vercel.app/",
+  })
+);
+const headers = (req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app/"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+};
+////////////////////////////////////////
+
 router.patch("/", auth, async (req, res) => {
   try {
     await Users.findByIdAndUpdate(req.session.userId, req.body);
@@ -26,7 +52,9 @@ router.patch("/", auth, async (req, res) => {
 
 router.get("/", auth, async (req, res) => {
   try {
-    res.json(await Users.findById(req.session.userId, { _id: 0, passwordHash: 0 }));
+    res.json(
+      await Users.findById(req.session.userId, { _id: 0, passwordHash: 0 })
+    );
   } catch (err) {
     console.error(err);
     res.status(400).json(dbError);
@@ -44,9 +72,13 @@ router.get("/:id", auth, async (req, res) => {
 
 router.post("/:id/rate", auth, async (req, res) => {
   try {
-    const user = await Users.findById(req.session.userId, { _id: 0, passwordHash: 0 });
+    const user = await Users.findById(req.session.userId, {
+      _id: 0,
+      passwordHash: 0,
+    });
     const userInteracted = user.userInteracted.map((d, i) => {
-      if (d.targetUsername === req.body.targetUsername) d.targetRating = req.body.targetRating;
+      if (d.targetUsername === req.body.targetUsername)
+        d.targetRating = req.body.targetRating;
       return d;
     });
     await Users.findByIdAndUpdate(req.session.userId, { userInteracted });
@@ -76,7 +108,9 @@ router.delete("/", async (req, res) => {
         let userInteracted = target.userInteracted.filter(
           (ea) => ea.targetUsername !== req.body.username
         );
-        const check = await Users.findByIdAndUpdate(target.id, { userInteracted });
+        const check = await Users.findByIdAndUpdate(target.id, {
+          userInteracted,
+        });
       }
       const done = await Users.deleteOne({ _id: user._id });
       if (done.deletedCount === 1) {
