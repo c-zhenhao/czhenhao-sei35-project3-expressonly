@@ -10,33 +10,16 @@ const dbError = {
 };
 
 // try inserting cors into endpoint
-const app = require("../src/expressLoader");
 const cors = require("cors");
-app.use(
+router.use(
   cors({
     credentials: true,
     origin: "https://czhenhao-sei-35-project3.vercel.app/",
   })
 );
-const headers = (req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://czhenhao-sei-35-project3.vercel.app/"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-};
 ////////////////////////////////////////
 
-router.get("/", auth, cors(), headers, async (req, res) => {
+router.get("/", auth, cors(), async (req, res) => {
   try {
     const { userInteracted } = await Users.findById(req.session.userId);
     const filteredList = userInteracted.filter((target) => target.swiped);
