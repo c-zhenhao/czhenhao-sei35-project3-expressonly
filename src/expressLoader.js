@@ -10,7 +10,12 @@ const origin = [
   `${process.env.FRONTEND_URI}`,
   "*",
 ];
-app.use(cors({ credentials: true, origin: origin }));
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://czhenhao-sei-35-project3.vercel.app",
+  })
+);
 
 app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
