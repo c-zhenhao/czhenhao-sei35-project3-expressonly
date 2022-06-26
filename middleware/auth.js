@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-  console.log(req.session.userId);
+  console.log(`auth.js ${req.session.userId}`);
   if (req.session.userId) {
     next();
   } else {
