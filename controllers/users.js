@@ -85,6 +85,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", auth, async (req, res) => {
+  console.log(auth);
   try {
     req.session.destroy(() => {
       res.json({ title: "OK", message: `logout successful` });
