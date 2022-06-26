@@ -14,7 +14,10 @@ const usernameOrPasswordError = {
 const cors = require("cors");
 app.use(cors({ credentials: true, origin: "*" }));
 const headers = (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app/"
+  );
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"

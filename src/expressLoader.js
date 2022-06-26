@@ -16,7 +16,10 @@ app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
   console.log(res);
   res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app/"
+  );
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header(
     "Access-Control-Allow-Headers",
