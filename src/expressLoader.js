@@ -11,6 +11,20 @@ const origin = [
 ];
 app.use(cors({ credentials: true, origin }));
 
+app.use(function (req, res, next) {
+  console.log("Cross-origin Requests");
+  console.log(req.headers);
+  console.log(res);
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
+
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,20 +51,6 @@ app.use(
     // cookie: { sameSite: "none", httpOnly: false },
   })
 );
-
-app.use(function (req, res, next) {
-  console.log("Cross-origin Requests");
-  console.log(req);
-  console.log(res);
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  next();
-});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
