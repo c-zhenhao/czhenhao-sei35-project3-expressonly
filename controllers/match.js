@@ -19,7 +19,7 @@ router.use(
 );
 ////////////////////////////////////////
 
-router.get("/", auth, cors(), headers, async (req, res) => {
+router.get("/", auth, cors(), async (req, res) => {
   try {
     const { userInteracted, userPreference } = await Users.findById(
       req.session.userId
@@ -52,7 +52,7 @@ router.get("/", auth, cors(), headers, async (req, res) => {
   }
 });
 
-router.post("/", auth, cors(), headers, async (req, res) => {
+router.post("/", auth, cors(), async (req, res) => {
   try {
     const { userInteracted } = await Users.findById(req.session.userId);
     userInteracted.push(req.body);
@@ -75,7 +75,7 @@ router.post("/", auth, cors(), headers, async (req, res) => {
   }
 });
 
-router.patch("/filters", cors(), headers, auth, async (req, res) => {
+router.patch("/filters", cors(), auth, async (req, res) => {
   try {
     const { userPreference } = req.body;
     await Users.findByIdAndUpdate(req.session.userId, { userPreference });
