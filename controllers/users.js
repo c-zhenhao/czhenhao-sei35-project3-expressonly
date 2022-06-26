@@ -61,7 +61,7 @@ router.put("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", cors(), async (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await Users.findOne({ username });
