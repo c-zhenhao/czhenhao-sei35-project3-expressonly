@@ -17,9 +17,24 @@ router.use(
     origin: "https://czhenhao-sei-35-project3.vercel.app",
   })
 );
+router.use(function (req, res, next) {
+  console.log("Cross-origin Requests");
+  console.log(res);
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://czhenhao-sei-35-project3.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
 ////////////////////////////////////////
 
-router.get("/", auth, cors(), async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const { userInteracted, userPreference } = await Users.findById(
       req.session.userId
@@ -52,7 +67,7 @@ router.get("/", auth, cors(), async (req, res) => {
   }
 });
 
-router.post("/", auth, cors(), async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const { userInteracted } = await Users.findById(req.session.userId);
     userInteracted.push(req.body);
@@ -75,7 +90,7 @@ router.post("/", auth, cors(), async (req, res) => {
   }
 });
 
-router.patch("/filters", cors(), auth, async (req, res) => {
+router.patch("/filters", auth, async (req, res) => {
   try {
     const { userPreference } = req.body;
     await Users.findByIdAndUpdate(req.session.userId, { userPreference });
