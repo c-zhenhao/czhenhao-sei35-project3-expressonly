@@ -16,7 +16,7 @@ const dbError = {
 
 // try inserting cors into endpoint
 const cors = require("cors");
-app.use(
+router.use(
   cors({
     credentials: true,
     origin: "https://czhenhao-sei-35-project3.vercel.app/",
