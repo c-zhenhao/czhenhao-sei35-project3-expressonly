@@ -10,8 +10,9 @@ const dbError = {
 };
 
 // try inserting cors into endpoint
+const app = require("../src/expressLoader");
 const cors = require("cors");
-router.use(
+app.use(
   cors({
     credentials: true,
     origin: "https://czhenhao-sei-35-project3.vercel.app/",
