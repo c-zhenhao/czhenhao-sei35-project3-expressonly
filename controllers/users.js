@@ -12,7 +12,7 @@ const usernameOrPasswordError = {
 
 // try inserting cors into endpoint
 const cors = require("cors");
-router.use(
+app.use(
   cors({
     credentials: true,
     origin: "https://czhenhao-sei-35-project3.vercel.app/",
@@ -61,7 +61,7 @@ router.put("/signup", cors(), headers, async (req, res) => {
   }
 });
 
-router.post("/login", cors(), headers, async (req, res) => {
+router.post("/login", cors(), headers(), async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await Users.findOne({ username });
