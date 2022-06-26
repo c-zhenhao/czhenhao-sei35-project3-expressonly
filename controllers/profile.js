@@ -19,7 +19,7 @@ const cors = require("cors");
 router.use(
   cors({
     credentials: true,
-    origin: "https://czhenhao-sei-35-project3.vercel.app/",
+    origin: "https://czhenhao-sei-35-project3.vercel.app",
   })
 );
 ////////////////////////////////////////

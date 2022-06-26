@@ -12,13 +12,13 @@ const origin = [
 ];
 app.use(cors({ credentials: true, origin: origin }));
 
-app.all(function (req, res, next) {
+app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
   console.log(res);
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://czhenhao-sei-35-project3.vercel.app/"
+    "https://czhenhao-sei-35-project3.vercel.app"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.setHeader(
