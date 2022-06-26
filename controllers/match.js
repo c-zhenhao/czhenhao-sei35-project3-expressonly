@@ -35,6 +35,7 @@ router.use(function (req, res, next) {
 ////////////////////////////////////////
 
 router.get("/", auth, async (req, res) => {
+  console.log(auth);
   try {
     const { userInteracted, userPreference } = await Users.findById(
       req.session.userId
