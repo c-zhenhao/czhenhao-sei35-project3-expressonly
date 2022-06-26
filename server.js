@@ -28,7 +28,7 @@ const randStr = (len) => {
   return result;
 };
 
-app.post("/seed", cors(), headers, async (req, res) => {
+app.post("/seed", async (req, res) => {
   for (let ea of seed) {
     ea.passwordHash = await bcrypt.hash("password", 12);
     ea.age = Math.floor(Math.random() * 52) + 18;
@@ -55,7 +55,7 @@ app.post("/seed", cors(), headers, async (req, res) => {
   //   res.json();
 });
 
-app.get("/seed", cors(), headers, async (req, res) => {
+app.get("/seed", async (req, res) => {
   try {
     const data = await Users.find();
     res.json(data);
