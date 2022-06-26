@@ -9,7 +9,7 @@ const origin = [
   "http://localhost:3000",
   `${process.env.FRONTEND_URI}`,
 ];
-app.use(cors({ credentials: true, origin }));
+app.use(cors({ credentials: true, origin: origin }));
 
 app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
