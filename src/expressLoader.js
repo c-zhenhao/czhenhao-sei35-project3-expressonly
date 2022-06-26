@@ -14,7 +14,6 @@ app.use(cors({ credentials: true, origin: origin }));
 
 app.use(function (req, res, next) {
   console.log("Cross-origin Requests");
-  console.log(req.headers);
   console.log(res);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "*");
