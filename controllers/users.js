@@ -37,6 +37,7 @@ router.use(function (req, res, next) {
 ////////////////////////////////////////
 
 // try insert use session in endpoints
+const session = require("express-session");
 router.use(
   session({
     secret: process.env.SECRET,
