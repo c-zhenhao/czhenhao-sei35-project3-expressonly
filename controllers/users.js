@@ -36,6 +36,19 @@ router.use(function (req, res, next) {
 });
 ////////////////////////////////////////
 
+// try insert use session in endpoints
+router.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    maxAge: 60 * 60 * 1000,
+    store: store,
+    // cookie: { sameSite: "none", httpOnly: false },
+  })
+);
+////////////////////////////////////////
+
 router.put("/signup", async (req, res) => {
   try {
     req.body.userRating = [2.5];
@@ -88,6 +101,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", auth, async (req, res) => {
   console.log(auth);
+  console.log(`logout req.session ${req.session}`);
   try {
     req.session.destroy(() => {
       res.json({ title: "OK", message: `logout successful` });
