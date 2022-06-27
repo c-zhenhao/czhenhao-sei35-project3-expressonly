@@ -58,7 +58,8 @@ app.use(
     saveUninitialized: false,
     maxAge: 60 * 60 * 1000,
     store: store,
-    cookie: { secure: true },
+    name: "plssavemycookies",
+    cookie: { secure: true, httpOnly: false, sameSite: "none" },
     // cookie: { sameSite: "none", httpOnly: false },
   })
 );
