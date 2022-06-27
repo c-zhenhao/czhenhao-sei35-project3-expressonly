@@ -36,20 +36,6 @@ router.use(function (req, res, next) {
 });
 ////////////////////////////////////////
 
-// try insert use session in endpoints
-const session = require("express-session");
-router.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    maxAge: 60 * 60 * 1000,
-    store: store,
-    // cookie: { sameSite: "none", httpOnly: false },
-  })
-);
-////////////////////////////////////////
-
 router.put("/signup", async (req, res) => {
   try {
     req.body.userRating = [2.5];
