@@ -50,6 +50,7 @@ const store = new MongoDBStore({
 });
 
 app.set("trust proxy", 1); // trust first proxy
+app.enable(`trust proxy`); // pls enable
 app.use(
   session({
     secret: process.env.SECRET,
