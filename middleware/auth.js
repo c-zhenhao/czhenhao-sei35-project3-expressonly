@@ -1,5 +1,6 @@
 module.exports = (req, res, next) => {
   console.log(`auth.js ${req.session}`);
+  console.log(`auth.js ${JSON.stringify(req.session)}`);
   console.log(`auth.js ${req.session.userId}`);
   console.log(`auth.js ${req.session.currentUser}`);
   if (req.session.userId) {
